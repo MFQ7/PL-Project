@@ -1,1 +1,5 @@
-
+Implement a Scanner/Parser for a simple language for expressions involving complex numbers using FLEX (Fast Lexical Analyzer Generator) and Bison (parser generator). 
+Your language should support all four basic arithmetic operations between complex numbers, as well as parentheses. 
+A complex number should be specified as (a ± bi), where a and b are integers. 
+Note that numbers that are missing either the real component or the imaginary component are considered valid.
+Example: (5 – 2i) - (-2 + 3i)*(-5i) + (7)
