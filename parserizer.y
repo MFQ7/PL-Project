@@ -1,12 +1,9 @@
-
-
 %{
 #include <stdio.h>
 #include <stdlib.h>
 
 int yylex(void);
 void yyerror(const char *s);
-void customerror(const char *s);
 %}
 
 %token INTEGER IMAGINARY
@@ -20,41 +17,34 @@ void customerror(const char *s);
 
 %%
 program:
-    expression
-    line
-    ;
-expression:
-    term
-    | expression PLUS term
-    | expression MINUS term
-    ;
+	program_line
+    	| program program_line
+    	;
 
-term:
-    factor
-    | term TIMES factor
-    | term DIVIDE factor
-    ;
+program_line: NEWLINE { printf("Enter expressions (Ctrl+D to exit or you can control this D):\n"); }
+    	| expression NEWLINE { printf("Seems good!\n"); }
+    	;
+expression: term
+        | expression addop term
+        ;
 
-factor:
-    INTEGER
-    | IMAGINARY
-    | MINUS factor
-    | LPAREN expression RPAREN
-    | LPAREN error { customerror("Unmatched '('"); yyclearin; }
-    ;
-line:
-    NEWLINE {printf("Seems Fine to me!\n"); yyclearin;}
+term: factor
+	| term multop factor
+     	;
+
+factor: INTEGER
+       	| IMAGINARY
+       	| MINUS factor
+       	| LPAREN expression RPAREN
+       	;
+addop: PLUS | MINUS ;
+multop: TIMES | DIVIDE ;
 %%
 
 void yyerror(const char *s) {
     fprintf(stderr, "Parser Error: %s\n", s);
 }
-void customerror(const char *s) {
-    fprintf(stderr, "WOW! You really did that. %s\n", s);
-}
-
 int main(void) {
-    printf("Enter expressions (Ctrl+D to exit):\n");
+    printf("Enter expressions (Ctrl+D to exit or you can control this D):\n");
     return yyparse();
 }
-
