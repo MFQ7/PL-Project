@@ -1,6 +1,5 @@
 %{
 #include "parserizer.tab.h"
-extern char *yytext;
 %}
 
 %%
@@ -15,11 +14,7 @@ extern char *yytext;
 ")"           	{ return RPAREN; }
 [ \t]       	; /* Skip whitespace */
 \n 		{ return NEWLINE;}
-q		{ return QUIT;}
-.             	{ 
-              	fprintf(stderr, "Bro, WHAT? I can't read this.\nScanner Error: Invalid character '%s'\n", yytext); 
-    		return 0; 
-    		}
+.             	{ fprintf(stderr, "Scanner Error: Invalid character '%s'\n", yytext); }
 %%
 
 int yywrap(void) {

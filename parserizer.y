@@ -6,8 +6,10 @@ int yylex(void);
 void yyerror(const char *s);
 %}
 
+%define parse.error verbose
+
 %token INTEGER IMAGINARY
-%token NEWLINE QUIT
+%token NEWLINE
 %token PLUS MINUS TIMES DIVIDE
 %token LPAREN RPAREN
 
@@ -23,6 +25,7 @@ program:
 
 program_line: NEWLINE { printf("Enter expressions (Ctrl+D to exit or you can control this D):\n"); }
     	| expression NEWLINE { printf("Seems good!\n"); }
+	| error NEWLINE { yyerrok; printf("Recovered from error.\n");}
     	;
 expression: term
         | expression addop term
