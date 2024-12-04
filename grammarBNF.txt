@@ -1,0 +1,31 @@
+<program>          ::= <program_line> 
+                     | <program> <program_line> ;
+
+<program_line>     ::= NEWLINE 
+                     | <multi_expression> NEWLINE 
+                     | error NEWLINE ;
+
+<multi_expression> ::= <enclosed_expression> 
+                     | <multi_expression> <addop> <enclosed_expression>
+                     | <multi_expression> <multop> <enclosed_expression> ;
+
+<enclosed_expression> ::= "(" <expression> ")" ;
+
+<expression>       ::= <term> 
+                     | <expression> <addop> <term> ;
+
+<term>             ::= <factor> 
+                     | <term> <multop> <factor> ;
+
+<factor>           ::= INTEGER 
+                     | IMAGINARY 
+                     | "-" <factor> 
+                     | "(" <expression> ")" ;
+
+<addop>            ::= "+" 
+                     | "-" ;
+
+<multop>           ::= "*" 
+                     | "/" ;
+
+
