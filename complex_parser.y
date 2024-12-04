@@ -1,7 +1,6 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-
 int yylex(void);
 void yyerror(const char *s);
 %}
@@ -22,7 +21,6 @@ program:
         program_line
         | program program_line
         ;
-
 program_line: NEWLINE { printf("Enter expressions in the form of complex numbers \"(a ± bi)\". (Ctrl+D to exit):\n"); }
         | multi_expression NEWLINE { printf("Seems Good!\n"); }
         | error NEWLINE { yyerrok; printf("Recovered from error.\n");}
@@ -46,7 +44,7 @@ term: factor
 
 factor: INTEGER
         | IMAGINARY
-        | MINUS factor
+        | MINUS factor %prec UMINUS
         | LPAREN expression RPAREN
         ;
 addop: PLUS | MINUS ;
